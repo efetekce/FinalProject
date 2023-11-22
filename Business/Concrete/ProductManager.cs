@@ -14,14 +14,30 @@ namespace Business.Concrete
     {
         IProductDal _productDal;
 
-        public ProductManager(InMemoryProductDal ınMemoryProductDal)
+        public ProductManager(IProductDal productDal)
         {
+            _productDal = productDal;
         }
 
         public List<Product> GetAll()
         {
             // is kodlari - business logic
             return _productDal.GetAll();
+        }
+
+        public List<Product> GetByUnitPrice(decimal min, decimal max)
+        {
+            return _productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
+        }
+
+        List<Product> GetAllByCategoryId(int id)
+        {
+            return _productDal.GetAll(p => p.CategoryId == id);
+        }
+
+        List<Product> IProductService.GetAllByCategoryId(int id)
+        {
+            return _productDal.GetAll(p => p.CategoryId == id);
         }
     }
 }
